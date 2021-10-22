@@ -48,7 +48,7 @@ struct ContentView: View {
                     }
                     .pickerStyle(.segmented)
                 } header: {
-                    Text("Into")
+                    Text("To")
                 }
                 
                 Section {
