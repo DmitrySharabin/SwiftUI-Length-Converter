@@ -9,15 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var input = 0.0
-    @State private var selectedInputUnit = UnitLength.inches
-    @State private var selectedOutputUnit = UnitLength.meters
+    @State private var inputUnit = UnitLength.inches
+    @State private var outputUnit = UnitLength.meters
     @FocusState private var inputIsFocused: Bool
     
     private let units: [UnitLength] = [.inches, .feet, .yards, .meters, .kilometers, .miles]
     
     var output: Double {
-        let inputMeasurement = Measurement(value: input, unit: selectedInputUnit)
-        let outputMeasurement = inputMeasurement.converted(to: selectedOutputUnit)
+        let inputMeasurement = Measurement(value: input, unit: inputUnit)
+        let outputMeasurement = inputMeasurement.converted(to: outputUnit)
         
         return outputMeasurement.value
     }
@@ -30,7 +30,7 @@ struct ContentView: View {
                         .keyboardType(.decimalPad)
                         .focused($inputIsFocused)
                     
-                    Picker("Choose unit", selection: $selectedInputUnit) {
+                    Picker("Choose unit", selection: $inputUnit) {
                         ForEach(units, id: \.self) {
                             Text($0.symbol)
                         }
@@ -41,7 +41,7 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    Picker("Choose unit", selection: $selectedOutputUnit) {
+                    Picker("Choose unit", selection: $outputUnit) {
                         ForEach(units, id: \.self) {
                             Text($0.symbol)
                         }
