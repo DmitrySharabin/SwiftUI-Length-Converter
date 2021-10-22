@@ -9,52 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var input = 0.0
-    @State private var selectedInputUnit = "in"
-    @State private var selectedOutputUnit = "m"
+    @State private var selectedInputUnit = UnitLength.inches
+    @State private var selectedOutputUnit = UnitLength.meters
     @FocusState private var inputIsFocused: Bool
     
-    private let units = ["in", "ft", "yd", "m", "km", "mi"]
+    private let units: [UnitLength] = [.inches, .feet, .yards, .meters, .kilometers, .miles]
     
     var output: Double {
-        let inputUnit: UnitLength
-        let outputUnit: UnitLength
-        
-        switch selectedInputUnit {
-            case "in":
-                inputUnit = .inches
-            case "ft":
-                inputUnit = .feet
-            case "yd":
-                inputUnit = .yards
-            case "m":
-                inputUnit = .meters
-            case "km":
-                inputUnit = .kilometers
-            case "mi":
-                inputUnit = .miles
-            default:
-                inputUnit = .inches
-        }
-        
-        switch selectedOutputUnit {
-            case "in":
-                outputUnit = .inches
-            case "ft":
-                outputUnit = .feet
-            case "yd":
-                outputUnit = .yards
-            case "m":
-                outputUnit = .meters
-            case "km":
-                outputUnit = .kilometers
-            case "mi":
-                outputUnit = .miles
-            default:
-                outputUnit = .meters
-        }
-        
-        let inputMeasurement = Measurement(value: input, unit: inputUnit)
-        let outputMeasurement = inputMeasurement.converted(to: outputUnit)
+        let inputMeasurement = Measurement(value: input, unit: selectedInputUnit)
+        let outputMeasurement = inputMeasurement.converted(to: selectedOutputUnit)
         
         return outputMeasurement.value
     }
@@ -69,7 +32,7 @@ struct ContentView: View {
                     
                     Picker("Choose unit", selection: $selectedInputUnit) {
                         ForEach(units, id: \.self) {
-                            Text($0)
+                            Text($0.symbol)
                         }
                     }
                     .pickerStyle(.segmented)
@@ -80,7 +43,7 @@ struct ContentView: View {
                 Section {
                     Picker("Choose unit", selection: $selectedOutputUnit) {
                         ForEach(units, id: \.self) {
-                            Text($0)
+                            Text($0.symbol)
                         }
                     }
                     .pickerStyle(.segmented)
